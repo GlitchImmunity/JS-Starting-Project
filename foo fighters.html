@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        canvas {
+            border:3px solid #d3d3d3;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body onload="startGame()">
+<script>
+
+    function startGame() {
+        myGameArea.start();
+        for (let i = 2; i < 8; i++) {
+            let archerExample = new object('imgs/crossbow.png', 'red', i, 1);
+        }
+        for (let i = 2; i < 8; i++) {
+            let siegeExample = new object('imgs/siege.png', 'red', i, 0);
+        }
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < 2; j++) {
+                let calvaryExample = new object('imgs/knight.png', 'red', i, j);
+            }
+        }
+        for (let i = 8; i < 10; i++) {
+            for (let j = 0; j < 2; j++) {
+                let calvaryExample = new object('imgs/knight.png', 'red', i, j);
+            }
+        }
+        for (let i = 2; i < 8; i++) {
+            let armoredExample = new object('imgs/armored.png', 'red', i, 2);
+        }
+    }
+
+    var myGameArea = {
+        canvas : document.createElement("canvas"),
+        start : function() {
+            this.canvas.width = 820;
+            this.canvas.height = 820;
+            this.padding = 10
+            this.dim = 80
+            this.lineWidth = 3
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.grid();
+        },
+        clear : function() {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.grid();
+        },
+        grid : function() {
+            let p = this.padding
+            let dim = this.dim
+            let totDim = this.canvas.width - 2*p
+            this.context.strokeStyle = "black";
+            for (let x = 0; x <= totDim; x += dim) {
+                this.context.moveTo(0.5 + x + p, p);
+                this.context.lineTo(0.5 + x + p, totDim + p);
+            }
+
+            for (let x = 0; x <= totDim; x += dim) {
+                this.context.moveTo(p, 0.5 + x + p);
+                this.context.lineTo(totDim + p, 0.5 + x + p);
+            }
+            this.context.lineWidth = this.lineWidth;
+            this.context.stroke();
+        },
+    }
+
+    function object(unitImg, color, x, y) {
+        let p = myGameArea.padding
+        let dim = myGameArea.dim
+        let ctx = myGameArea.context;
+        let lineWidth = myGameArea.lineWidth
+        ctx.globalAlpha = 0.4
+        ctx.fillStyle = color;
+        ctx.fillRect(x*dim+p+lineWidth-1, y*dim+p+lineWidth-1, dim-lineWidth, dim-lineWidth);
+        ctx.globalAlpha = 1.0
+
+        let objectImg = new Image();
+        objectImg.src = unitImg;
+        objectImg.onload = () => {
+            ctx.drawImage(objectImg, x*dim+p, y*dim+p, dim, dim);
+        }
+    }
+
+</script>
+
+<p>The art of war</p>
+
+</body>
+</html>
